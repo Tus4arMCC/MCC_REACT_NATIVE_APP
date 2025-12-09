@@ -1,0 +1,22 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    /* ✅ Modern JSX (NO React global issues) */
+    "jsx": "react-jsx",
+
+    /* ✅ REQUIRED for Expo + Metro */
+    "moduleResolution": "bundler",
+
+    /* ✅ Fix React default imports */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* ✅ Stability */
+    "strict": true,
+    "skipLibCheck": true,
+
+    /* ✅ React Native */
+    "isolatedModules": true,
+    "resolveJsonModule": true
+  }
+}
