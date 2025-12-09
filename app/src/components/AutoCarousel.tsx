@@ -9,7 +9,7 @@ import {
   NativeScrollEvent,
 } from "react-native";
 
-import { carouselStyles as styles, SCREEN_WIDTH } from "../custonCSS/AutoCarousel.styles";
+import { carouselStyles as styles, SCREEN_WIDTH } from "../custonCSS/components/AutoCarousel.styles";
 import { ImageSourcePropType } from "react-native";
 import { Images } from "../assets/images";
 

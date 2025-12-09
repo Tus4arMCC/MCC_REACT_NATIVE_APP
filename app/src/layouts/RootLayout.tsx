@@ -1,23 +1,21 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
+
+import BottomTabs from "../navigation/BottomTabs";
 
 /*
   RootLayout
   ----------
-  ✅ Acts as a global SafeArea wrapper
-  ✅ Prevents repeating SafeAreaView on every screen
-  ✅ Mobile-safe for notch & status bar
+  ✅ Global Safe Area wrapper
+  ✅ Applied once
+  ✅ All screens protected
 */
 
-type Props = {
-  children: React.ReactNode;
-};
-
-export default function RootLayout({ children }: Props) {
+export default function RootLayout() {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      {children}
+      <BottomTabs />
     </SafeAreaView>
   );
 }

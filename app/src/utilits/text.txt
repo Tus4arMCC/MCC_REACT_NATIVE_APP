@@ -1,0 +1,15 @@
+addressLine1: dqfqwf"
+addressLine2: "ewqe"
+cityName: "Abohar"
+code: null
+countryName: "India"
+d: "VGh1IE5vdiAxMyAyMDI1IDE5OjE4OjM0IEdNVCswNTMwIChJbmRpYSBTdGFuZGFyZCBUaW1lKQ==
+"deliveryInstruction: "asda
+"email: "testuser1@example.com"
+isPrimary: true
+landMark: "ads"
+name: "Tushar Kumar"
+phone: "08194846705"
+pinCode: "152116"
+stateName: "Punjab"
+userCode: "501521e8-4e63-4103-9d93-d6774a56982c"
