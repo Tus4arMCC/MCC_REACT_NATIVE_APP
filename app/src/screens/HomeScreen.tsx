@@ -3,8 +3,9 @@ import axios from "axios";
 import { ScrollView, Image, View } from "react-native";
 import { useSelector } from "react-redux";
 import { YStack, Text } from "tamagui";
-
 import { ImageSourcePropType } from "react-native";
+import AnimatedEntrance from "../components/AnimatedEntrance";
+
 import { Images } from "../assets/images";
 
 import AutoCarousel from "../components/AutoCarousel";
@@ -21,9 +22,6 @@ import { styles } from "../custonCSS/screens/HomeScreen.styles";
 interface CategoryImageItem {
   image: ImageSourcePropType;
 }
-/* =======================
-   Component
-   ======================= */
 
 const HomeScreen = () => {
   const [sections, setSections] = useState<any[]>([]);
@@ -36,22 +34,18 @@ const HomeScreen = () => {
     const fetchCategoryAndDetails = async () => {
       setLoading(true);
       try {
-        /* ✅ Parallel API calls */
         const [categoryRes, detailsRes] = await Promise.all([
           axios.get(PKSOFT_URLS.CUSTOMER.CATEGORY),
           axios.get(PKSOFT_URLS.CUSTOMER.DETAILS),
         ]);
 
-        const categoryData = Array.isArray(categoryRes.data?.data)
-          ? categoryRes.data.data
-          : [];
+        setCategories(
+          Array.isArray(categoryRes.data?.data) ? categoryRes.data.data : []
+        );
 
-        const detailsData = Array.isArray(detailsRes.data?.data)
-          ? detailsRes.data.data
-          : [];
-
-        setCategories(categoryData);
-        setSections(detailsData);
+        setSections(
+          Array.isArray(detailsRes.data?.data) ? detailsRes.data.data : []
+        );
       } catch (error) {
         console.error("Error fetching home screen data:", error);
         setCategories([]);
@@ -64,13 +58,7 @@ const HomeScreen = () => {
     fetchCategoryAndDetails();
   }, []);
 
- const DEFAULT_IMAGES: CategoryImageItem[] = [
-  { image: Images.category_clothing },
-  { image: Images.category_home_appliances },
-  { image: Images.category_perfume },
-  { image: Images.category_shoes },
-];
-  /* Static category grid (RN props renamed) */
+  /* Static category grid data */
   const leftItems = [
     {
       title: "Mobile Accessories",
@@ -101,12 +89,20 @@ const HomeScreen = () => {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Hero AutoCarousel */}
-      <AutoCarousel />
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
+    >
+      {/* ✅ Hero Carousel */}
+      <View style={styles.sectionTight}>
+        <AnimatedEntrance delay={0}>
+          <AutoCarousel />
+        </AnimatedEntrance>
+      </View>
 
-      {/* Promo GIF */}
-      <View style={styles.promoWrapper}>
+      {/* ✅ Promo Banner */}
+      <View style={styles.sectionTight}>
         <Image
           source={Images.promoGif}
           style={styles.promoImage}
@@ -114,26 +110,27 @@ const HomeScreen = () => {
         />
       </View>
 
-      {/* ✅ Category AutoCarousel using already-fetched data */}
+      {/* ✅ Category Icons Carousel */}
       {categories.length > 0 && (
-        <CategoryCarousel
-          categories={categories}
-          titleKey="name"
-          imageKey="image"
-          linkKey="pageUrl"
-        />
+        <View style={styles.sectionTight}>
+          <AnimatedEntrance delay={200}>
+            <CategoryCarousel
+              categories={categories}
+              titleKey="name"
+              imageKey="image"
+              linkKey="pageUrl"
+            />
+          </AnimatedEntrance>
+        </View>
       )}
 
-      {/* Category grid */}
-      <CategoryGrid
-      leftItems={leftItems}
-      rightItem={rightItem}
-      smallCardHeight={320}
-      largeCardHeight={600}
-    />
+      {/* ✅ Top Categories Grid */}
+      <View style={styles.sectionTight}>
+        <CategoryGrid leftItems={leftItems} rightItem={rightItem} />
+      </View>
 
-      {/* Product Sections */}
-      <YStack style={styles.sectionWrapper}>
+      {/* ✅ Product Sections */}
+      <YStack style={styles.sectionNormal}>
         {loading ? (
           <View style={styles.skeletonGrid}>
             {Array.from({ length: 4 }).map((_, i) => (
@@ -143,15 +140,11 @@ const HomeScreen = () => {
             ))}
           </View>
         ) : sections.length === 0 ? (
-          <Text style={styles.emptyText}>
-            No products available.
-          </Text>
+          <Text style={styles.emptyText}>No products available.</Text>
         ) : (
           sections
             .filter(Boolean)
-            .sort(
-              (a, b) => (a?.order ?? 0) - (b?.order ?? 0)
-            )
+            .sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
             .map((section, idx) => (
               <SectionCarousel
                 key={idx}
@@ -162,9 +155,14 @@ const HomeScreen = () => {
         )}
       </YStack>
 
-      {/* Static sections */}
-      <FeaturesSection />
-      <ReviewCarousel />
+      {/* ✅ Static sections */}
+      <View style={styles.sectionNormal}>
+        <FeaturesSection />
+      </View>
+
+      <View style={styles.sectionNormal}>
+        <ReviewCarousel />
+      </View>
     </ScrollView>
   );
 };

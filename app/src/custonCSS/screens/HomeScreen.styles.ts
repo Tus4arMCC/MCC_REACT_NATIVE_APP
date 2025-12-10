@@ -6,19 +6,23 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  promoWrapper: {
-    marginVertical: 16,
-    width: "100%",
+  contentContainer: {
+    paddingBottom: 16,
+  },
+
+  /* ✅ Tight spacing sections (hero → categories) */
+  sectionTight: {
+    marginBottom: 8,
+  },
+
+  /* ✅ Normal content spacing */
+  sectionNormal: {
+    marginTop: 16,
   },
 
   promoImage: {
     width: "100%",
     height: 200,
-    borderRadius: 8,
-  },
-
-  sectionWrapper: {
-    marginTop: 16,
   },
 
   skeletonGrid: {

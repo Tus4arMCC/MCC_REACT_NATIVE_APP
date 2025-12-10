@@ -8,7 +8,7 @@ import { styles } from "../custonCSS/components/CategoryGrid.styles";
 
 /* =======================
    Types
-   ======================= */
+======================= */
 
 interface CategoryItem {
   title: string;
@@ -17,111 +17,96 @@ interface CategoryItem {
 }
 
 interface CategoryGridProps {
-  leftItems: CategoryItem[];
+  leftItems: CategoryItem[]; // expect 4 items
   rightItem: CategoryItem;
-  smallCardHeight?: number;
-  largeCardHeight?: number;
 }
 
 /* =======================
    Component
-   ======================= */
+======================= */
 
-const CategoryGrid = ({
-  leftItems,
-  rightItem,
-  smallCardHeight = 260,
-  largeCardHeight = 540,
-}: CategoryGridProps) => {
+const CategoryGrid = ({ leftItems, rightItem }: CategoryGridProps) => {
   const navigation = useNavigation<any>();
 
-  /* ✅ SAFE IMAGE RESOLVER (RN compliant) */
   const renderImage = (src: CategoryItem["image"]) => {
-    // local image (require)
-    if (typeof src === "number") {
-      return src;
-    }
-
-    // already in { uri } form
-    if (typeof src === "object" && src?.uri) {
-      return src;
-    }
-
-    // string path / url
+    if (typeof src === "number") return src;
+    if (typeof src === "object" && src?.uri) return src;
     if (typeof src === "string") {
-      if (src.startsWith("/")) {
-        return { uri: resolveImageUrl(src) };
-      }
+      if (src.startsWith("/")) return { uri: resolveImageUrl(src) };
       return { uri: src };
     }
-
-    // fallback (prevents crash)
     return undefined;
   };
+
+  // just to be safe if less than 4 items
+  const topRow = leftItems.slice(0, 2);
+  const bottomRow = leftItems.slice(2, 4);
 
   return (
     <YStack style={styles.wrapper}>
       <Text style={styles.title}>Top Categories</Text>
 
       <View style={styles.row}>
-        {/* LEFT GRID */}
-        <View style={styles.leftGrid}>
-          {leftItems.map((item, idx) => (
-            <TouchableOpacity
-              key={idx}
-              activeOpacity={0.85}
-              onPress={() => navigation.navigate(item.route)}
-              style={[
-                styles.card,
-                {
-                  flex: 1,
-                  height: smallCardHeight,
-                },
-              ]}
-            >
-              <View style={styles.imageWrapper}>
+        {/* LEFT 2x2 GRID */}
+        <View style={styles.leftColumn}>
+          {/* Top row: items 0 & 1 */}
+          <View style={styles.leftRow}>
+            {topRow.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[styles.smallCard, index === 0 && styles.smallRightGap]}
+                onPress={() => navigation.navigate(item.route)}
+              >
                 <Image
                   source={renderImage(item.image)}
-                  resizeMode="cover"
                   style={styles.image}
+                  resizeMode="cover"
                 />
 
                 <View style={styles.overlay}>
                   <Text style={styles.overlayTitle}>{item.title}</Text>
-                  <View style={styles.shopBtn}>
-                    <Text style={styles.shopText}>SHOP NOW</Text>
-                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          ))}
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Bottom row: items 2 & 3 */}
+          <View style={styles.leftRow}>
+            {bottomRow.map((item, index) => (
+              <TouchableOpacity
+                key={index + 2}
+                style={[styles.smallCard, index === 0 && styles.smallRightGap]}
+                activeOpacity={0.85}
+                onPress={() => navigation.navigate(item.route)}
+              >
+                <Image
+                  source={renderImage(item.image)}
+                  style={styles.image}
+                  resizeMode="cover"
+                />
+
+                <View style={styles.overlay}>
+                  <Text style={styles.overlayTitle}>{item.title}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
 
-        {/* RIGHT LARGE CARD */}
+        {/* RIGHT BIG CARD */}
         <TouchableOpacity
+          style={styles.bigCard}
           activeOpacity={0.85}
           onPress={() => navigation.navigate(rightItem.route)}
-          style={[
-            styles.card,
-            {
-              flex: 1,
-              height: largeCardHeight,
-            },
-          ]}
         >
-          <View style={styles.imageWrapper}>
-            <Image
-              source={renderImage(rightItem.image)}
-              resizeMode="cover"
-              style={styles.image}
-            />
+          <Image
+            source={renderImage(rightItem.image)}
+            style={styles.image}
+            resizeMode="cover"
+          />
 
-            <View style={styles.overlay}>
-              <Text style={styles.overlayTitle}>{rightItem.title}</Text>
-              <View style={styles.shopBtn}>
-                <Text style={styles.shopText}>SHOP NOW</Text>
-              </View>
-            </View>
+          <View style={styles.overlay}>
+            <Text style={styles.overlayTitle}>{rightItem.title}</Text>
           </View>
         </TouchableOpacity>
       </View>

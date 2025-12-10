@@ -1,36 +1,37 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import React, { useRef } from "react";
+import {
+  View,
+  Animated,
+  Dimensions,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native";
 import { Text, YStack } from "tamagui";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 
-import reviews, { Review } from "../data/reviews";
+import reviews from "../data/reviews";
 import { styles } from "../custonCSS/components/ReviewCarousel.styles";
 
-/*
-  ReviewCarousel
-  ---------------
-  ✅ Same slide logic (chunking)
-  ✅ Native navigation
-  ✅ Mobile-safe buttons
-*/
+const { width } = Dimensions.get("window");
+
+const CARD_WIDTH = width * 0.82;
+const SIDE_SPACING = (width - CARD_WIDTH) / 2;
 
 const ReviewCarousel = () => {
-  const chunkSize = 3;
-  const slides: Review[][] = [];
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const lastIndex = useRef(0);
 
-  for (let i = 0; i < reviews.length; i += chunkSize) {
-    slides.push(reviews.slice(i, i + chunkSize));
-  }
+  const onMomentumEnd = (
+    e: NativeSyntheticEvent<NativeScrollEvent>
+  ) => {
+    const index = Math.round(
+      e.nativeEvent.contentOffset.x / CARD_WIDTH
+    );
 
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handlePrev = () => {
-    if (activeIndex > 0) setActiveIndex(activeIndex - 1);
-  };
-
-  const handleNext = () => {
-    if (activeIndex < slides.length - 1) {
-      setActiveIndex(activeIndex + 1);
+    if (index !== lastIndex.current) {
+      Haptics.selectionAsync(); // ✅ HAPTIC
+      lastIndex.current = index;
     }
   };
 
@@ -43,66 +44,85 @@ const ReviewCarousel = () => {
         Heart warming experiences shared by our customers
       </Text>
 
-      <View style={styles.row}>
-        {slides[activeIndex].map((review) => (
-          <View key={review.id} style={styles.card}>
-            {/* Stars */}
-            <View style={styles.stars}>
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Ionicons
-                  key={i}
-                  name="star"
-                  size={18}
-                  color={i < review.rating ? "#ffc107" : "#ddd"}
-                />
-              ))}
-            </View>
+      <Animated.FlatList
+        data={reviews}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()}
+        snapToInterval={CARD_WIDTH}
+        decelerationRate="fast"
+        bounces={false}
+        contentContainerStyle={{
+          paddingHorizontal: SIDE_SPACING,
+        }}
+        onMomentumScrollEnd={onMomentumEnd}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
+        renderItem={({ item, index }) => {
+          const inputRange = [
+            (index - 1) * CARD_WIDTH,
+            index * CARD_WIDTH,
+            (index + 1) * CARD_WIDTH,
+          ];
 
-            <Text fontWeight="700">“{review.title}”</Text>
-            <Text color="#777" marginTop={6}>
-              {review.description}
-            </Text>
+          const scale = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.95, 1, 0.95],
+            extrapolate: "clamp",
+          });
 
-            <Text style={styles.readMore}>Read More &gt;</Text>
+          const shadowOpacity = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.1, 0.35, 0.1],
+            extrapolate: "clamp",
+          });
 
-            <View style={styles.authorRow}>
-              <View style={styles.avatar} />
-              <View>
-                <Text fontWeight="700">{review.name}</Text>
-                <Text color="#777" fontSize={12}>
-                  {review.location}
-                </Text>
+          return (
+            <Animated.View
+              style={[
+                styles.card,
+                {
+                  width: CARD_WIDTH,
+                  transform: [{ scale }],
+                  shadowOpacity,
+                },
+              ]}
+            >
+              {/* Stars */}
+              <View style={styles.stars}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Ionicons
+                    key={i}
+                    name="star"
+                    size={18}
+                    color={i < item.rating ? "#ffc107" : "#ddd"}
+                  />
+                ))}
               </View>
-            </View>
-          </View>
-        ))}
-      </View>
 
-      {/* Arrows */}
-      <View style={styles.arrows}>
-        <TouchableOpacity
-          onPress={handlePrev}
-          disabled={activeIndex === 0}
-          style={[
-            styles.arrowBtn,
-            activeIndex === 0 && styles.disabledArrow,
-          ]}
-        >
-          <Ionicons name="chevron-back" color="#fff" size={22} />
-        </TouchableOpacity>
+              <Text fontWeight="700">“{item.title}”</Text>
 
-        <TouchableOpacity
-          onPress={handleNext}
-          disabled={activeIndex === slides.length - 1}
-          style={[
-            styles.arrowBtn,
-            activeIndex === slides.length - 1 &&
-              styles.disabledArrow,
-          ]}
-        >
-          <Ionicons name="chevron-forward" color="#fff" size={22} />
-        </TouchableOpacity>
-      </View>
+              <View style={styles.descriptionBox}>
+                <Text color="#777">{item.description}</Text>
+              </View>
+
+              <Text style={styles.readMore}>Read More &gt;</Text>
+
+              <View style={styles.authorRow}>
+                <View style={styles.avatar} />
+                <View>
+                  <Text fontWeight="700">{item.name}</Text>
+                  <Text color="#777" fontSize={12}>
+                    {item.location}
+                  </Text>
+                </View>
+              </View>
+            </Animated.View>
+          );
+        }}
+      />
     </YStack>
   );
 };

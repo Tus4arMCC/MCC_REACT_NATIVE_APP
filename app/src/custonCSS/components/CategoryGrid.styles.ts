@@ -1,40 +1,63 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const GAP = 12;
+
+// Left + right split
+const LEFT_WIDTH = (SCREEN_WIDTH - 16 * 2 - GAP) / 2;
+
+// Small cards (2 in a row)
+const SMALL_WIDTH = (LEFT_WIDTH - GAP) / 2;
+const SMALL_HEIGHT = SMALL_WIDTH * 1.35;
+
+// Big card height = exactly 2 small + gap
+const BIG_HEIGHT = SMALL_HEIGHT * 2 + GAP;
 
 export const styles = StyleSheet.create({
   wrapper: {
-    marginVertical: 24,
     paddingHorizontal: 16,
   },
 
   title: {
+    fontSize: 22,
+    fontWeight: "600",
+    marginBottom: 12,
     textAlign: "center",
-    marginBottom: 16,
-    fontSize: 20,
-    fontWeight: "700",
+
   },
 
   row: {
     flexDirection: "row",
-    gap: 16,
   },
 
-  leftGrid: {
-    flex: 1,
+  /* LEFT SIDE */
+  leftColumn: {
+    width: LEFT_WIDTH,
+    marginRight: GAP,
+  },
+
+  leftRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 16,
-    justifyContent: "center",
+    marginBottom: GAP,
   },
 
-  card: {
-    borderRadius: 15,
+  smallCard: {
+    width: SMALL_WIDTH,
+    height: SMALL_HEIGHT,
+    borderRadius: 16,
     overflow: "hidden",
-    elevation: 4,
-    backgroundColor: "#000",
   },
 
-  imageWrapper: {
-    position: "relative",
+  smallRightGap: {
+    marginRight: GAP,
+  },
+
+  /* RIGHT SIDE */
+  bigCard: {
+    width: LEFT_WIDTH,
+    height: BIG_HEIGHT, // ✅ EXACT MATCH
+    borderRadius: 20,
+    overflow: "hidden",
   },
 
   image: {
@@ -43,31 +66,15 @@ export const styles = StyleSheet.create({
   },
 
   overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 12,
+    position: "absolute",
+    bottom: 12,
+    left: 12,
+    right: 12,
   },
 
   overlayTitle: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "700",
-    textAlign: "center",
-  },
-
-  shopBtn: {
-    marginTop: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    backgroundColor: "#dc3545",
-    borderRadius: 16,
-  },
-
-  shopText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
   },
 });
