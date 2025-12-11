@@ -20,7 +20,7 @@ export const secureStorage = {
 
       return decrypted || null;
     } catch (e) {
-      console.error("[secureStorage] decrypt error:", e);
+      //console.error("[secureStorage] decrypt error:", e);
       return null;
     }
   },
@@ -34,7 +34,7 @@ export const secureStorage = {
 
       await AsyncStorage.setItem(key, encrypted);
     } catch (e) {
-      console.error("[secureStorage] encrypt error:", e);
+      //console.error("[secureStorage] encrypt error:", e);
     }
   },
 
@@ -42,7 +42,7 @@ export const secureStorage = {
     try {
       await AsyncStorage.removeItem(key);
     } catch (e) {
-      console.error("[secureStorage] remove error:", e);
+      //console.error("[secureStorage] remove error:", e);
     }
   },
 };

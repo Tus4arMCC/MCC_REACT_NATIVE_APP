@@ -46,12 +46,12 @@ export const handleAuthDialog = (dispatch: any, navigation: any) => {
 
             if (data?.uid) {
               handleGuestLoginSuccess(data.uid, dispatch);
-              console.log("[RN DIALOG] Guest login successful ✅");
+              //console.log("[RN DIALOG] Guest login successful ✅");
             } else {
-              console.error("[RN DIALOG] No uid in response");
+              //console.error("[RN DIALOG] No uid in response");
             }
           } catch (error) {
-            console.error("[RN DIALOG] Guest login error:", error);
+            //console.error("[RN DIALOG] Guest login error:", error);
           }
         },
       },
@@ -80,7 +80,7 @@ export const handleRegistrationSuccess = (
   dispatch: any
 ) => {
   handleUserLoginSuccess(userId, userInfo, dispatch);
-  console.log("[RN AUTH] User registration successful ✅");
+  //console.log("[RN AUTH] User registration successful ✅");
 };
 
 /**
@@ -92,7 +92,7 @@ export const handleLoginSuccess = (
   dispatch: any
 ) => {
   handleUserLoginSuccess(userId, userInfo, dispatch);
-  console.log("[RN AUTH] User login successful ✅");
+  //console.log("[RN AUTH] User login successful ✅");
 };
 
 export default {

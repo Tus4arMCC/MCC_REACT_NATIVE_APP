@@ -8,7 +8,7 @@ const saveToStorage = async (key: string, data: any) => {
   try {
     await AsyncStorage.setItem(key, JSON.stringify(data));
   } catch (error) {
-    console.log("[StorageSync] Save error:", error);
+    //console.log("[StorageSync] Save error:", error);
   }
 };
 
@@ -16,7 +16,7 @@ const removeFromStorage = async (key: string) => {
   try {
     await AsyncStorage.removeItem(key);
   } catch (error) {
-    console.log("[StorageSync] Remove error:", error);
+    //console.log("[StorageSync] Remove error:", error);
   }
 };
 

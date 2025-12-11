@@ -65,7 +65,7 @@ const CenteredCategoryCarousel = ({
         if (!Array.isArray(data)) data = [];
         setItems(data);
       } catch (err) {
-        console.error("Category fetch error:", err);
+        //console.error("Category fetch error:", err);
         setItems([]);
       } finally {
         setLoading(false);

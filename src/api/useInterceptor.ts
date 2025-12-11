@@ -95,7 +95,7 @@ const useInterceptor = () => {
         showErrorToast(
           "Network error - please check your connection."
         );
-        console.error(error);
+        //console.error(error);
       }
 
       return Promise.reject(error);

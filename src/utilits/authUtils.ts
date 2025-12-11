@@ -66,18 +66,18 @@ export const readAuthFromStorage = async () => {
 
 export const saveGuestId = async (guestId: string) => {
   await AsyncStorage.setItem("guest_id", guestId);
-  console.log("[AUTH RN] Guest ID saved");
+  //console.log("[AUTH RN] Guest ID saved");
 };
 
 export const getGuestId = async (): Promise<string | null> => {
   const guestId = await AsyncStorage.getItem("guest_id");
-  if (guestId) console.log("[AUTH RN] Guest ID recovered");
+  if (guestId) //console.log("[AUTH RN] Guest ID recovered");
   return guestId;
 };
 
 export const deleteGuestId = async () => {
   await AsyncStorage.removeItem("guest_id");
-  console.log("[AUTH RN] Guest ID deleted");
+  //console.log("[AUTH RN] Guest ID deleted");
 };
 
 /* ------------------------------------------------------------------ */
@@ -86,18 +86,18 @@ export const deleteGuestId = async () => {
 
 export const saveUserId = async (userId: string) => {
   await AsyncStorage.setItem("user_id", userId);
-  console.log("[AUTH RN] User ID saved");
+  //console.log("[AUTH RN] User ID saved");
 };
 
 export const getUserId = async (): Promise<string | null> => {
   const userId = await AsyncStorage.getItem("user_id");
-  if (userId) console.log("[AUTH RN] User ID recovered");
+  if (userId) //console.log("[AUTH RN] User ID recovered");
   return userId;
 };
 
 export const deleteUserId = async () => {
   await AsyncStorage.removeItem("user_id");
-  console.log("[AUTH RN] User ID deleted");
+  //console.log("[AUTH RN] User ID deleted");
 };
 
 /* ------------------------------------------------------------------ */
@@ -115,7 +115,7 @@ export const handleGuestLoginSuccess = async (
     payload: { guest_id: guestId },
   });
 
-  console.log("[AUTH RN] Guest login successful:", guestId);
+  //console.log("[AUTH RN] Guest login successful:", guestId);
 };
 
 export const handleUserLoginSuccess = async (
@@ -131,7 +131,7 @@ export const handleUserLoginSuccess = async (
     payload: { ...userInfo, user_id: userId },
   });
 
-  console.log("[AUTH RN] User login successful:", userId);
+  //console.log("[AUTH RN] User login successful:", userId);
 };
 
 /* ------------------------------------------------------------------ */
@@ -147,7 +147,7 @@ export const handleLogout = async (dispatch: any) => {
     type: "auth/clearUserInfo",
   });
 
-  console.log("[AUTH RN] Logout complete");
+  //console.log("[AUTH RN] Logout complete");
 };
 
 export default {

@@ -3,7 +3,6 @@ import axios from "axios";
 import { ScrollView, Image, View } from "react-native";
 import { useSelector } from "react-redux";
 import { YStack, Text } from "tamagui";
-import { ImageSourcePropType } from "react-native";
 import AnimatedEntrance from "../components/AnimatedEntrance";
 
 import { Images } from "../assets/images";
@@ -16,12 +15,13 @@ import ReviewCarousel from "../components/ReviewCarousel";
 import SectionCarousel from "../components/SectionCarousel";
 import SkeletonProductCard from "../skeletonLoading/SkeletonProductCard";
 
+import { useNavigation } from "@react-navigation/native";
+import { readAuthFromStorage } from "../utilits/authStorage";
+
+import { isJwtValid } from "../utilits/authUtils";
 import PKSOFT_URLS from "../utilits/Pk_api_Urls";
 import { styles } from "../custonCSS/screens/HomeScreen.styles";
 
-interface CategoryImageItem {
-  image: ImageSourcePropType;
-}
 
 const HomeScreen = () => {
   const [sections, setSections] = useState<any[]>([]);
@@ -29,6 +29,18 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(true);
 
   const auth = useSelector((state: any) => state.auth);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const check = async () => {
+      const auth = await readAuthFromStorage();
+      if (!isJwtValid(auth.jwt)) {
+        navigation.navigate("Login" as never);
+      }
+    };
+
+    check();
+  }, []);
 
   useEffect(() => {
     const fetchCategoryAndDetails = async () => {
@@ -47,7 +59,7 @@ const HomeScreen = () => {
           Array.isArray(detailsRes.data?.data) ? detailsRes.data.data : []
         );
       } catch (error) {
-        console.error("Error fetching home screen data:", error);
+        // //console.error("Error fetching home screen data:", error);
         setCategories([]);
         setSections([]);
       } finally {

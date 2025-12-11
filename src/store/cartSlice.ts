@@ -23,7 +23,7 @@ const cartSlice = createSlice({
 
       // Validate inputs
       if (!productId || typeof productId !== "string" || qty <= 0) {
-        console.warn("Invalid product data:", { productId, qty });
+        //console.warn("Invalid product data:", { productId, qty });
         return;
       }
 
@@ -41,7 +41,7 @@ const cartSlice = createSlice({
       const productId = action.payload;
 
       if (!productId || typeof productId !== "string") {
-        console.warn("Invalid product ID:", productId);
+        //console.warn("Invalid product ID:", productId);
         return;
       }
 
@@ -54,7 +54,7 @@ const cartSlice = createSlice({
 
       // Validate inputs
       if (!productId || typeof productId !== "string" || qty < 0) {
-        console.warn("Invalid product data:", { productId, qty });
+        //console.warn("Invalid product data:", { productId, qty });
         return;
       }
 

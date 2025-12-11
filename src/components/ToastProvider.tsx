@@ -1,17 +1,18 @@
-import { ToastProvider, ToastViewport } from "@tamagui/toast";
-import { ReactNode } from "react";
+// import React from "react";
+// import { ToastProvider, ToastViewport } from "@tamagui/toast";
 
-export function AppToastProvider({ children }: { children: ReactNode }) {
-  return (
-    <ToastProvider swipeDirection="horizontal" duration={2000}>
-      {children}
-      <ToastViewport
-        top={50}
-        left={0}
-        right={0}
-        flexDirection="column"
-        alignItems="center"
-      />
-    </ToastProvider>
-  );
-}
+// export default function AppToastProvider({ children }: { children: any }) {
+//   return (
+//     <ToastProvider swipeDirection="horizontal">
+//       {children}
+
+//       <ToastViewport
+//         top={40}
+//         right={0}
+//         left={0}
+//         flexDirection="column"
+//         alignItems="center"
+//       />
+//     </ToastProvider>
+//   );
+// }

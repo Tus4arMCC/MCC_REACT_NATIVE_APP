@@ -63,7 +63,7 @@ export const addToWishlistAPI = async (
     showErrorToast(response.data?.message);
     return { success: false };
   } catch (error: any) {
-    console.error("[RN] Error adding to wishlist:", error);
+    //console.error("[RN] Error adding to wishlist:", error);
     showErrorToast(
       error.response?.data?.message ||
         "Failed to add to wishlist. Please try again."
@@ -109,7 +109,7 @@ export const getWishlistAPI = async (): Promise<{
     showErrorToast(response.data?.message || "Failed to fetch wishlist");
     return { success: false, data: [] };
   } catch (error: any) {
-    console.error("[RN] Error fetching wishlist:", error);
+    //console.error("[RN] Error fetching wishlist:", error);
     showErrorToast(
       error.response?.data?.message ||
         "Failed to fetch wishlist. Please try again."
@@ -163,7 +163,7 @@ export const removeFromWishlistAPI = async (
     showErrorToast(response.data?.message);
     return { success: false };
   } catch (error: any) {
-    console.error("[RN] Error removing from wishlist:", error);
+    //console.error("[RN] Error removing from wishlist:", error);
     showErrorToast(
       error.response?.data?.message ||
         "Failed to remove from wishlist. Please try again."

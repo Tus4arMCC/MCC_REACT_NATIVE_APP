@@ -59,7 +59,7 @@ export const syncCartWishlistWithCounts = async (
 
       return { cartCount: 0, wishlistCount: 0, isRandom: false };
     } catch (error) {
-      console.error("[SYNC RN] API failed:", error);
+      //console.error("[SYNC RN] API failed:", error);
       return { cartCount: 0, wishlistCount: 0, isRandom: false };
     }
   })();
@@ -111,9 +111,9 @@ export const fetchCartWishlistCounts = async (
 export const clearLocalCartWishlist = async () => {
   try {
     // Optional: keep local cache for offline use
-    console.log("[SYNC RN] Local cart/wishlist retained");
+    //console.log("[SYNC RN] Local cart/wishlist retained");
   } catch (error) {
-    console.error("[SYNC RN] Clear failed:", error);
+    //console.error("[SYNC RN] Clear failed:", error);
   }
 };
 

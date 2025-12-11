@@ -40,7 +40,7 @@ export const addToCartAPI = async (
 
     return { success: false };
   } catch (error: any) {
-    console.error("[RN] Error adding to cart:", error);
+    //console.error("[RN] Error adding to cart:", error);
     return { success: false };
   }
 };
@@ -82,7 +82,7 @@ export const removeFromCartAPI = async (
 
     return { success: false };
   } catch (error: any) {
-    console.error("[RN] Error removing from cart:", error);
+    //console.error("[RN] Error removing from cart:", error);
     return { success: false };
   }
 };
